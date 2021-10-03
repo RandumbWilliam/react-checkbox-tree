@@ -58,9 +58,9 @@ class TreeNode extends React.PureComponent {
     }
 
     onCheck() {
-        const { value, onCheck } = this.props;
+        const { value, onCheck, title } = this.props;
 
-        onCheck({ value, checked: this.getCheckState({ toggle: true }) });
+        onCheck({ value, checked: this.getCheckState({ toggle: true }), title });
     }
 
     onCheckboxKeyPress(event) {
