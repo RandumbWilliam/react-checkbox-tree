@@ -33,9 +33,10 @@ describe('<CheckboxTree />', () => {
                             {
                                 value: 'jupiter',
                                 label: 'Jupiter',
+                                title: 'planet',
                                 children: [
-                                    { value: 'io', label: 'Io' },
-                                    { value: 'europa', label: 'Europa' },
+                                    { value: 'io', label: 'Io', title: 'moon' },
+                                    { value: 'europa', label: 'Europa', title: 'moon' },
                                 ],
                             },
                         ]}
@@ -46,7 +47,7 @@ describe('<CheckboxTree />', () => {
                 );
 
                 wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
-                assert.deepEqual(['jupiter', 'io', 'europa'], actual);
+                assert.deepEqual([{ title: 'planet', val: 'jupiter' }, { title: 'moon', val: 'io' }, { title: 'moon', val: 'europa' }], actual);
             });
 
             it('should percolate `checked` to all parents and grandparents if all leaves are checked', () => {
@@ -55,20 +56,22 @@ describe('<CheckboxTree />', () => {
                 const wrapper = mount(
                     <CheckboxTree
                         checkModel="all"
-                        checked={['mercury', 'io']}
-                        expanded={['sol', 'jupiter']}
+                        checked={[{ title: 'planet', val: 'mercury' }, { title: 'moon', val: 'io' }]}
+                        expanded={[{ title: 'system', val: 'sol' }, { title: 'planet', val: 'jupiter' }]}
                         nodes={[
                             {
                                 value: 'sol',
                                 label: 'Sol System',
+                                title: 'system',
                                 children: [
-                                    { value: 'mercury', label: 'Mercury' },
+                                    { value: 'mercury', label: 'Mercury', title: 'planet' },
                                     {
                                         value: 'jupiter',
                                         label: 'Jupiter',
+                                        title: 'planet',
                                         children: [
-                                            { value: 'io', label: 'Io' },
-                                            { value: 'europa', label: 'Europa' },
+                                            { value: 'io', label: 'Io', title: 'moon' },
+                                            { value: 'europa', label: 'Europa', title: 'moon' },
                                         ],
                                     },
                                 ],
@@ -81,7 +84,7 @@ describe('<CheckboxTree />', () => {
                 );
 
                 wrapper.find('TreeNode[value="europa"] input[type="checkbox"]').simulate('click');
-                assert.deepEqual(['sol', 'mercury', 'jupiter', 'io', 'europa'], actual);
+                assert.deepEqual([{ title: 'system', val: 'sol' }, { title: 'planet', val: 'mercury' }, { title: 'planet', val: 'jupiter' }, { title: 'moon', val: 'io' }, { title: 'moon', val: 'europa' }], actual);
             });
 
             it('should NOT percolate `checked` to the parent if not all leaves are checked', () => {
@@ -90,14 +93,15 @@ describe('<CheckboxTree />', () => {
                 const wrapper = mount(
                     <CheckboxTree
                         checkModel="all"
-                        expanded={['jupiter']}
+                        expanded={[{ title: 'planet', val: 'jupiter' }]}
                         nodes={[
                             {
                                 value: 'jupiter',
                                 label: 'Jupiter',
+                                title: 'planet',
                                 children: [
-                                    { value: 'io', label: 'Io' },
-                                    { value: 'europa', label: 'Europa' },
+                                    { value: 'io', label: 'Io', title: 'moon' },
+                                    { value: 'europa', label: 'Europa', title: 'moon' },
                                 ],
                             },
                         ]}
@@ -108,7 +112,7 @@ describe('<CheckboxTree />', () => {
                 );
 
                 wrapper.find('TreeNode[value="europa"] input[type="checkbox"]').simulate('click');
-                assert.deepEqual(['europa'], actual);
+                assert.deepEqual([{ title: 'moon', val: 'europa' }], actual);
             });
         });
 
@@ -122,9 +126,10 @@ describe('<CheckboxTree />', () => {
                             {
                                 value: 'jupiter',
                                 label: 'Jupiter',
+                                title: 'planet',
                                 children: [
-                                    { value: 'io', label: 'Io' },
-                                    { value: 'europa', label: 'Europa' },
+                                    { value: 'io', label: 'Io', title: 'moon' },
+                                    { value: 'europa', label: 'Europa', title: 'moon' },
                                 ],
                             },
                         ]}
@@ -135,7 +140,7 @@ describe('<CheckboxTree />', () => {
                 );
 
                 wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
-                assert.deepEqual(['io', 'europa'], actual);
+                assert.deepEqual([{ title: 'moon', val: 'io' }, { title: 'moon', val: 'europa' }], actual);
             });
         });
     });
@@ -426,9 +431,10 @@ describe('<CheckboxTree />', () => {
                         {
                             value: 'jupiter',
                             label: 'Jupiter',
+                            title: 'planet',
                             children: [
-                                { value: 'io', label: 'Io' },
-                                { value: 'europa', label: 'Europa' },
+                                { value: 'io', label: 'Io', title: 'moon' },
+                                { value: 'europa', label: 'Europa', title: 'moon' },
                             ],
                         },
                     ]}
@@ -439,7 +445,7 @@ describe('<CheckboxTree />', () => {
             );
 
             wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
-            assert.deepEqual(['jupiter'], actual);
+            assert.deepEqual([{ title: 'planet', val: 'jupiter' }], actual);
         });
 
         it('should toggle the check state of children when set to false', () => {
@@ -451,9 +457,10 @@ describe('<CheckboxTree />', () => {
                         {
                             value: 'jupiter',
                             label: 'Jupiter',
+                            title: 'planet',
                             children: [
-                                { value: 'io', label: 'Io' },
-                                { value: 'europa', label: 'Europa' },
+                                { value: 'io', label: 'Io', title: 'moon' },
+                                { value: 'europa', label: 'Europa', title: 'moon' },
                             ],
                         },
                     ]}
@@ -464,7 +471,7 @@ describe('<CheckboxTree />', () => {
             );
 
             wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
-            assert.deepEqual(['io', 'europa'], actual);
+            assert.deepEqual([{ title: 'moon', val: 'io' }, { title: 'moon', val: 'europa' }], actual);
         });
     });
 
@@ -492,14 +499,15 @@ describe('<CheckboxTree />', () => {
             it('should disable the child nodes when `noCascade` is false', () => {
                 const wrapper = shallow(
                     <CheckboxTree
-                        expanded={['jupiter']}
+                        expanded={[{ title: 'planet', val: 'jupiter' }]}
                         nodes={[
                             {
                                 value: 'jupiter',
                                 label: 'Jupiter',
+                                title: 'planet',
                                 disabled: true,
                                 children: [
-                                    { value: 'europa', label: 'Europa' },
+                                    { value: 'europa', label: 'Europa', title: 'moon' },
                                 ],
                             },
                         ]}
@@ -512,15 +520,16 @@ describe('<CheckboxTree />', () => {
             it('should NOT disable the child nodes when `noCascade` is true', () => {
                 const wrapper = shallow(
                     <CheckboxTree
-                        expanded={['jupiter']}
+                        expanded={[{ title: 'planet', val: 'jupiter' }]}
                         noCascade
                         nodes={[
                             {
                                 value: 'jupiter',
                                 label: 'Jupiter',
+                                title: 'planet',
                                 disabled: true,
                                 children: [
-                                    { value: 'europa', label: 'Europa' },
+                                    { value: 'europa', label: 'Europa', title: 'moon' },
                                 ],
                             },
                         ]}
@@ -535,13 +544,14 @@ describe('<CheckboxTree />', () => {
                 const wrapper = shallow(
                     <CheckboxTree
                         disabled
-                        expanded={['jupiter']}
+                        expanded={[{ title: 'planet', val: 'jupiter' }]}
                         nodes={[
                             {
                                 value: 'jupiter',
                                 label: 'Jupiter',
+                                title: 'planet',
                                 children: [
-                                    { value: 'europa', label: 'Europa' },
+                                    { value: 'europa', label: 'Europa', title: 'moon' },
                                 ],
                             },
                         ]}
@@ -559,14 +569,15 @@ describe('<CheckboxTree />', () => {
         it('should only render checkboxes for leaf nodes', () => {
             const wrapper = mount(
                 <CheckboxTree
-                    expanded={['jupiter']}
+                    expanded={[{ title: 'planet', val: 'jupiter' }]}
                     nodes={[
                         {
                             value: 'jupiter',
                             label: 'Jupiter',
+                            title: 'planet',
                             children: [
-                                { value: 'io', label: 'Io' },
-                                { value: 'europa', label: 'Europa' },
+                                { value: 'io', label: 'Io', title: 'moon' },
+                                { value: 'europa', label: 'Europa', title: 'moon' },
                             ],
                         },
                     ]}
@@ -584,7 +595,7 @@ describe('<CheckboxTree />', () => {
         it('should render the expand all/collapse all buttons', () => {
             const wrapper = shallow(
                 <CheckboxTree
-                    nodes={[{ value: 'jupiter', label: 'Jupiter' }]}
+                    nodes={[{ value: 'jupiter', label: 'Jupiter', title: 'planet' }]}
                     showExpandAll
                 />,
             );
@@ -602,21 +613,24 @@ describe('<CheckboxTree />', () => {
                             {
                                 value: 'mercury',
                                 label: 'Mercury',
+                                title: 'planet',
                             },
                             {
                                 value: 'mars',
                                 label: 'Mars',
+                                title: 'planet',
                                 children: [
-                                    { value: 'phobos', label: 'Phobos' },
-                                    { value: 'deimos', label: 'Deimos' },
+                                    { value: 'phobos', label: 'Phobos', title: 'moon' },
+                                    { value: 'deimos', label: 'Deimos', title: 'moon' },
                                 ],
                             },
                             {
                                 value: 'jupiter',
                                 label: 'Jupiter',
+                                title: 'planet',
                                 children: [
-                                    { value: 'io', label: 'Io' },
-                                    { value: 'europa', label: 'Europa' },
+                                    { value: 'io', label: 'Io', title: 'moon' },
+                                    { value: 'europa', label: 'Europa', title: 'moon' },
                                 ],
                             },
                         ]}
@@ -628,7 +642,7 @@ describe('<CheckboxTree />', () => {
                 );
 
                 wrapper.find('.rct-option-expand-all').simulate('click');
-                assert.deepEqual(['mars', 'jupiter'], actualExpanded);
+                assert.deepEqual([{ title: 'planet', val: 'mars' }, { title: 'planet', val: 'jupiter' }], actualExpanded);
             });
         });
 
@@ -642,21 +656,24 @@ describe('<CheckboxTree />', () => {
                             {
                                 value: 'mercury',
                                 label: 'Mercury',
+                                title: 'planet',
                             },
                             {
                                 value: 'mars',
                                 label: 'Mars',
+                                title: 'planet',
                                 children: [
-                                    { value: 'phobos', label: 'Phobos' },
-                                    { value: 'deimos', label: 'Deimos' },
+                                    { value: 'phobos', label: 'Phobos', title: 'moon' },
+                                    { value: 'deimos', label: 'Deimos', title: 'moon' },
                                 ],
                             },
                             {
                                 value: 'jupiter',
                                 label: 'Jupiter',
+                                title: 'planet',
                                 children: [
-                                    { value: 'io', label: 'Io' },
-                                    { value: 'europa', label: 'Europa' },
+                                    { value: 'io', label: 'Io', title: 'moon' },
+                                    { value: 'europa', label: 'Europa', title: 'moon' },
                                 ],
                             },
                         ]}
@@ -718,9 +735,10 @@ describe('<CheckboxTree />', () => {
                         {
                             value: 'jupiter',
                             label: 'Jupiter',
+                            title: 'planet',
                             children: [
-                                { value: 'io', label: 'Io' },
-                                { value: 'europa', label: 'Europa' },
+                                { value: 'io', label: 'Io', title: 'moon' },
+                                { value: 'europa', label: 'Europa', title: 'moon' },
                             ],
                         },
                     ]}
@@ -731,7 +749,7 @@ describe('<CheckboxTree />', () => {
             );
 
             wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
-            assert.deepEqual(['io', 'europa'], actualChecked);
+            assert.deepEqual([{ title: 'moon', val: 'io' }, { title: 'moon', val: 'europa' }], actualChecked);
         });
 
         it('should not add disabled children to the checked array', () => {
@@ -743,9 +761,12 @@ describe('<CheckboxTree />', () => {
                         {
                             value: 'jupiter',
                             label: 'Jupiter',
+                            title: 'planet',
                             children: [
-                                { value: 'io', label: 'Io', disabled: true },
-                                { value: 'europa', label: 'Europa' },
+                                {
+                                    value: 'io', label: 'Io', title: 'moon', disabled: true,
+                                },
+                                { value: 'europa', label: 'Europa', title: 'moon' },
                             ],
                         },
                     ]}
@@ -756,7 +777,7 @@ describe('<CheckboxTree />', () => {
             );
 
             wrapper.find('TreeNode input[type="checkbox"]').simulate('click');
-            assert.deepEqual(['europa'], actualChecked);
+            assert.deepEqual([{ title: 'moon', val: 'europa' }], actualChecked);
         });
 
         it('should pass the node toggled as the second parameter', () => {
@@ -822,9 +843,10 @@ describe('<CheckboxTree />', () => {
                         {
                             value: 'jupiter',
                             label: 'Jupiter',
+                            title: 'planet',
                             children: [
-                                { value: 'io', label: 'Io' },
-                                { value: 'europa', label: 'Europa' },
+                                { value: 'io', label: 'Io', title: 'moon' },
+                                { value: 'europa', label: 'Europa', title: 'moon' },
                             ],
                         },
                     ]}
@@ -835,7 +857,7 @@ describe('<CheckboxTree />', () => {
             );
 
             wrapper.find('TreeNode Button.rct-collapse-btn').simulate('click');
-            assert.deepEqual(['jupiter'], actualExpanded);
+            assert.deepEqual([{ title: 'planet', val: 'jupiter' }], actualExpanded);
         });
 
         it('should pass the node toggled as the second parameter', () => {
@@ -874,6 +896,7 @@ describe('<CheckboxTree />', () => {
                 const {
                     value,
                     label,
+                    title,
                     isLeaf,
                     isParent,
                     treeDepth,
@@ -884,6 +907,7 @@ describe('<CheckboxTree />', () => {
                 return {
                     value,
                     label,
+                    title,
                     isLeaf,
                     isParent,
                     treeDepth,
@@ -893,14 +917,15 @@ describe('<CheckboxTree />', () => {
             };
             const wrapper = mount(
                 <CheckboxTree
-                    expanded={['jupiter']}
+                    expanded={[{ title: 'planet', val: 'jupiter' }]}
                     nodes={[
                         {
                             value: 'jupiter',
                             label: 'Jupiter',
+                            title: 'planet',
                             children: [
-                                { value: 'io', label: 'Io' },
-                                { value: 'europa', label: 'Europa' },
+                                { value: 'io', label: 'Io', title: 'moon' },
+                                { value: 'europa', label: 'Europa', title: 'moon' },
                             ],
                         },
                     ]}
@@ -918,6 +943,7 @@ describe('<CheckboxTree />', () => {
             const expectedLeafMetadata = {
                 value: 'io',
                 label: 'Io',
+                title: 'moon',
                 isLeaf: true,
                 isParent: false,
                 treeDepth: 1,
@@ -927,6 +953,7 @@ describe('<CheckboxTree />', () => {
             const expectedParentMetadata = {
                 value: 'jupiter',
                 label: 'Jupiter',
+                title: 'planet',
                 isLeaf: false,
                 isParent: true,
                 treeDepth: 0,

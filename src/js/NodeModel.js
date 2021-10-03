@@ -55,7 +55,7 @@ class NodeModel {
                 label: node.label,
                 value: node.value,
                 children: node.children,
-                title: node.title ,
+                title: node.title,
                 parent,
                 isChild: parent.value !== undefined,
                 isParent,
@@ -98,8 +98,8 @@ class NodeModel {
         // Deserialize values and set their nodes to true
         listKeys.forEach((listKey) => {
             lists[listKey].forEach((value) => {
-                if (this.flatNodes[value.value] !== undefined) {
-                    this.flatNodes[value.value][listKey] = true;
+                if (this.flatNodes[value.val] !== undefined) {
+                    this.flatNodes[value.val][listKey] = true;
                 }
             });
         });
@@ -110,7 +110,10 @@ class NodeModel {
 
         Object.keys(this.flatNodes).forEach((value) => {
             if (this.flatNodes[value][key]) {
-                list.push({'title': this.flatNodes[value].title, 'value': value});
+                list.push({
+                    title: this.flatNodes[value].title,
+                    val: value,
+                });
             }
         });
 

@@ -5,8 +5,8 @@ const listShape = PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.number),
     PropTypes.arrayOf(PropTypes.shape({
         title: PropTypes.string,
-        value: PropTypes.string
-    }))
+        val: PropTypes.string,
+    })),
 ]);
 
 export default listShape;
